@@ -8,7 +8,7 @@ services:
   name: Httpbin-SE-Service
   port: 443
   protocol: https
-  read_timeout: 80000
+  read_timeout: 50000
   retries: 5
   tags:
   - se-deck-flow

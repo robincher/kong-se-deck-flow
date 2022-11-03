@@ -13,7 +13,7 @@ jobs:
     environment: play
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.285.0
+      uses: actions/checkout@v2.5.0
     - name: Setup Node
       uses: actions/setup-node@v3.5.1
       with:
