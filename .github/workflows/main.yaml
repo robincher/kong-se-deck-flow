@@ -37,7 +37,7 @@ jobs:
       run: deck validate -s ./deck
 
     - name: Compare Configurations
-      run: deck diff --select-tag se-deck-flow 
+      run: deck diff --select-tag se-deck-flow  -s ./deck
       env:
         DECK_KONG_ADDR: ${{ secrets.KONG_ADMIN_API_URL }}
         DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
