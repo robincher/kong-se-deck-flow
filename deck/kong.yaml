@@ -1,11 +1,9 @@
 _format_version: "3.0"
 _info:
-  defaults: {}
   select_tags:
   - se-deck-flow
 services:
 - connect_timeout: 60000
-  enabled: true
   host: httpbin.org
   name: Httpbin-SE-Service
   port: 443
