@@ -7,11 +7,11 @@ services:
 - connect_timeout: 60000
   enabled: true
   host: httpbin.org
-  name: Httpbin-Demo-Service
+  name: Httpbin-SE-Service
   port: 443
   protocol: https
   read_timeout: 60000
-  retries: 5
+  retries: 6
   tags:
   - se-deck-flow
   write_timeout: 60000
