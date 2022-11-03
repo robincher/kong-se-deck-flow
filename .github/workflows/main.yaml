@@ -1,0 +1,56 @@
+on:
+  push:
+    branches:
+      - 'master'
+    paths-ignore:
+      - '.github/**'
+      - README.md 
+
+jobs:
+  deploy_to_clouds:
+    runs-on: ubuntu-latest
+    name: Deploying Kong Configuration
+    environment: play
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Node
+      uses: actions/setup-node@v2.2.0
+      with:
+        node-version: "12"
+    - name: Install decK
+      run: |
+        curl -sL https://github.com/kong/deck/releases/download/v1.4.0/deck_1.5.1_linux_amd64.tar.gz -o deck.tar.gz
+        tar -xf deck.tar.gz -C /tmp
+        cp /tmp/deck /usr/local/bin/
+
+    - name: Display decK Version
+      run: deck version
+
+    - name: Backup existing configuration
+      run: deck dump --select-tag se-deck-flow -o kong-dev.yaml --tls-skip-verify
+      env:
+        DECK_KONG_ADDR: ${{ secrets.KONG_ADMIN_API_URL }}
+        DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
+
+    - name: Validate Deck Config File
+      run: deck validate -s ./deck
+
+    - name: Compare Configurations
+      run: deck diff --select-tag se-deck-flow 
+      env:
+        DECK_KONG_ADDR: ${{ secrets.KONG_ADMIN_API_URL }}
+        DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
+
+    - name: Apply new configuration
+      run: deck sync  --select-tag se-deck-flow -s ./deck --tls-skip-verify
+      env:
+        DECK_KONG_ADDR: ${{ secrets.KONG_ADMIN_API_URL }}
+        DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
+
+    - name: Back out changes on failure
+      if: ${{ failure() }}
+      run: deck sync  --select-tag se-deck-flow -s kong-dev.yaml  --tls-skip-verify
+      env:
+        DECK_KONG_ADDR: ${{ secrets.KONG_ADMIN_API_URL }}
+        DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
