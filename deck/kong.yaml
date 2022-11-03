@@ -9,7 +9,7 @@ services:
   port: 443
   protocol: https
   read_timeout: 80000
-  retries: 3
+  retries: 5
   tags:
   - se-deck-flow
   write_timeout: 60000
