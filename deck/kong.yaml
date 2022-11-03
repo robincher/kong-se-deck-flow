@@ -7,7 +7,7 @@ services:
 - connect_timeout: 60000
   enabled: true
   host: httpbin.org
-  name: Httpbin-Service
+  name: Httpbin-Demo-Service
   port: 443
   protocol: https
   read_timeout: 60000
