@@ -27,8 +27,8 @@ jobs:
     - name: Display decK Version
       run: deck version
 
-    - name: Backup existing configuration
-      run: deck dump --all-workspaces -o kong-dev.yaml --tls-skip-verify
+    - name: Backup existing configuration for a specific tag
+      run: deck dump --select-tag se-deck-flow -o kong-dev.yaml --tls-skip-verify
       env:
         DECK_KONG_ADDR: ${{ secrets.KONG_ADMIN_API_URL }}
         DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
